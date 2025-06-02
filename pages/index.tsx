@@ -1,19 +1,32 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import styles from "@/styles/Home.module.css";
+import { useEffect, useState } from 'react';
 
-const geistSans = Geist({
+const geistSans = Inter({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
+const geistMono = JetBrains_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
 export default function Home() {
+  const [authUrl, setAuthUrl] = useState('');
+
+  useEffect(() => {
+    const url = new URL('https://www.linkedin.com/oauth/v2/authorization');
+    url.searchParams.append('response_type', 'code');
+    url.searchParams.append('client_id', process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID || '');
+    url.searchParams.append('redirect_uri', process.env.NEXT_PUBLIC_LINKEDIN_REDIRECT_URI || '');
+    url.searchParams.append('scope', 'r_liteprofile w_compliance w_member_social');
+    url.searchParams.append('state', '1234');
+    setAuthUrl(url.toString());
+  }, []);
+
   return (
     <>
       <Head>
@@ -66,6 +79,16 @@ export default function Home() {
               Read our docs
             </a>
           </div>
+
+          <main className="min-h-screen flex flex-col items-center justify-center p-24">
+            <h1 className="text-4xl font-bold mb-8">LinkedIn OAuth Demo</h1>
+            <a
+              href={authUrl}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Connect with LinkedIn
+            </a>
+          </main>
         </main>
         <footer className={styles.footer}>
           <a
