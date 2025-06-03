@@ -12,7 +12,11 @@ export default function Home() {
     )}` +
     `&scope=r_liteprofile%20w_compliance%20w_member_social` +
     `&state=1234`; // en POC usamos un state fijo; en producción hazlo dinámico
-
+  console.log({
+    authorizeUrl,
+    clientId: process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID,
+    redirexturi: process.env.NEXT_PUBLIC_LINKEDIN_REDIRECT_URI,
+  });
   return (
     <main style={{ padding: "2rem", fontFamily: "Arial, sans-serif" }}>
       <h1>Prueba de OAuth LinkedIn (Local)</h1>
